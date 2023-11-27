@@ -1,9 +1,10 @@
 package com.agis.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -12,22 +13,19 @@ import jakarta.persistence.Table;
 public class Vinculo {
     
     @Id
-    private int codigoVinculo;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
 
-    @ManyToOne
-    @JoinColumns({
-        @JoinColumn(name="aluno_ra"),
-        @JoinColumn(name="codigo_curso")
-    })
+    @ManyToOne(targetEntity = Matricula.class)
+    @JoinColumn(name="matricula_codigo")
     private Matricula matricula;
 
+
     @ManyToOne
-    @JoinColumn(name="codigo_disciplina")
+    @JoinColumn(name="disciplina_codigo")
     private Disciplina disciplina;
 
-    public void setCodigoVinculo(int codigoVinculo) {
-        this.codigoVinculo = codigoVinculo;
-    }
+    private boolean cursada;
 
     public void setDisciplina(Disciplina disciplina) {
         this.disciplina = disciplina;
@@ -37,8 +35,12 @@ public class Vinculo {
         this.matricula = matricula;
     }
 
-    public int getCodigoVinculo() {
-        return codigoVinculo;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Disciplina getDisciplina() {
@@ -47,5 +49,13 @@ public class Vinculo {
 
     public Matricula getMatricula() {
         return matricula;
+    }
+
+    public void setCursada(boolean cursada) {
+        this.cursada = cursada;
+    }
+
+    public boolean getCursada(){
+        return this.cursada;
     }
 }

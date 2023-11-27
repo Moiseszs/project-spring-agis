@@ -1,8 +1,13 @@
 package com.agis.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -10,6 +15,7 @@ import jakarta.persistence.Table;
 public class Curso {
 
 	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codigo;
 	
 	@Column(name="nome", length = 200)
@@ -23,6 +29,12 @@ public class Curso {
 	
 	@Column(name="nota_enade")
 	private float notaEnade;
+
+    @Column(name = "turno", length = 10)
+    private String turno;
+
+    @OneToMany(mappedBy = "curso")
+    private List<Disciplina> disciplinas;
 
 	public int getCodigo() {
 		return codigo;
@@ -64,5 +76,11 @@ public class Curso {
 		this.notaEnade = notaEnade;
 	}
 	
-	
+	public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
 }
