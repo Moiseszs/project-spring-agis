@@ -11,7 +11,7 @@
             <h3>AGIS</h3>
         </nav>
         <h4>Relatorio de Faltas por Semana</h4>
-        <table>
+        <table >
             <thead>
                 <th>Aluno</th>
                 <th>Disciplina</th>
@@ -28,7 +28,9 @@
                     </tr>
                 </c:forEach>
             </tbody>
-            
-        </table>                
+        </table>    
+        <form action="relatorio-impresso" target="_blank">
+            <input type="submit" value="Gerar Relatorio">
+        </form>            
     </body>
 </html>

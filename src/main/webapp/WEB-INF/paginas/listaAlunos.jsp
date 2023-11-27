@@ -16,6 +16,7 @@
                 <div>
                     <label>${aluno.nomeCompleto}  </label>
                     <a href="vinculo/${aluno.ra}">Vincular Disciplinas</a>
+                    
                 </div>
             </c:forEach>
         </div>

@@ -12,6 +12,8 @@
             <a href="chamada">Chamada</a>
             <a href="notas">Aplicar Notas</a>
             <a href="lista-ra">Vincular a uma Disciplina</a>
+            <a href="vinculos">Marcar Disciplina como Cursada</a>
+            <a href="relatorio">Relatorio de Faltas por Semana</a>
         </div>
     </body>
 
