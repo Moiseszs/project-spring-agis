@@ -44,12 +44,14 @@ import com.agis.model.Frequencia;
 import com.agis.model.Matricula;
 import com.agis.model.Nota;
 import com.agis.model.Relatorio;
+import com.agis.model.RelatorioNotas;
 import com.agis.model.Vinculo;
 import com.agis.repository.CursoRepository;
 import com.agis.repository.DisciplinaRepository;
 import com.agis.repository.FrequenciaRepository;
 import com.agis.repository.MatriculaRepository;
 import com.agis.repository.NotaRepository;
+import com.agis.repository.RelatorioNotasRepository;
 import com.agis.repository.RelatorioRepository;
 import com.agis.repository.VinculoRepository;
 
@@ -88,6 +90,9 @@ public class AlunoController {
 
     @Autowired
     NotaRepository notaRepository;
+
+    @Autowired
+    RelatorioNotasRepository relatorioNotasRepository;
 
     @GetMapping("/")
     public String getIndex(Model model){
@@ -191,6 +196,15 @@ public class AlunoController {
         model.addAttribute("vinculos", vinculos);        
         return "vinculos";        
     }
+
+
+    @GetMapping("/relatorio-notas")
+    public String getNotas(Model model){
+        List<RelatorioNotas> relatorios = relatorioNotasRepository.findAll();
+        model.addAttribute("relatorios", relatorios);        
+        return "relatorioNotas";
+    }
+
 
     @PostMapping("atualiza-vinculos")
     public String atualizaVinculos(@ModelAttribute AtualizacaoVinculosForm atualizacaoVinculosForm){
