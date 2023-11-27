@@ -8,7 +8,10 @@
     </head>
 
     <body>
-        <nav>AGIS</nav>
+        <nav>
+            AGIS
+            <a href="/">Voltar</a>
+        </nav>
 
         <form action="/dados-notas" target="_blank">
             <select name="codigo">

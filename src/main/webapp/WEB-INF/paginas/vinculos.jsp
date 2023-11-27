@@ -8,6 +8,10 @@
 
     <body>
 
+        <nav>
+            AGIS
+            <a href="/">Voltar</a>
+        </nav>
         <form action="/lista-vinculos" method="GET" target="_blank">
             <select name="ra">
                 <c:forEach var="aluno" items="${alunos}">

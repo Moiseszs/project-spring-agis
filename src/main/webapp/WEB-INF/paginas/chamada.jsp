@@ -6,6 +6,10 @@
     </head>
 
     <body>
+        <nav>
+            AGIS
+            <a href="/">Voltar</a>
+        </nav>
         <form action="lista-alunos" method="GET" target="_blank">
             <label>Selecione uma disciplina: </label>
             <select name="codigo">

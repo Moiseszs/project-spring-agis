@@ -4,6 +4,10 @@
 <html>
 
 <body>
+    <nav>
+        AGIS
+        <a href="/">Voltar</a>
+    </nav>
     <div>
         <label>Aluno: </label>
         <input type="text" value="${aluno.nomeCompleto}" disabled>

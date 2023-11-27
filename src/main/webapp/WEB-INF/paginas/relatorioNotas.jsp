@@ -9,13 +9,14 @@
     <body>
         <nav>
             <h3>AGIS</h3>
+            <a href="/">Voltar</a>
         </nav>
         <h4>Relatorio de Faltas por Semana</h4>
         <table >
             <thead>
                 <th>Aluno</th>
                 <th>Disciplina</th>
-                <th>Quantidade de Faltas</th>
+                <th>Media</th>
                 <th>Total de Faltas</th>
             </thead>
             <tbody>

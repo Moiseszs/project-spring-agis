@@ -8,7 +8,10 @@
     </head>
 
     <body>
-        <nav>AGIS</nav>
+        <nav>
+            AGIS
+            <a href="/">Voltar</a>
+        </nav>
 
         <main>
             <form action="matricula" method="POST">
