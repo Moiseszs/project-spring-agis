@@ -5,8 +5,14 @@
     </head>
 
     <body>
-        <c:out value="${var}"></c:out>
-        <h1>Index</h1>
+        <nav>AGIS</nav>
+
+        <div style="display: grid">
+            <a href="matricula">Matricula</a>
+            <a href="chamada">Chamada</a>
+            <a href="notas">Aplicar Notas</a>
+            <a href="lista-ra">Vincular a uma Disciplina</a>
+        </div>
     </body>
 
 </html>

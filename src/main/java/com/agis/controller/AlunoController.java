@@ -33,6 +33,7 @@ import com.agis.repository.Connector;
 import com.agis.forms.AtualizacaoVinculosForm;
 import com.agis.forms.ChamadaForm;
 import com.agis.forms.MatriculaForm;
+import com.agis.forms.NotasForm;
 import com.agis.forms.VinculoForm;
 import com.agis.model.Aluno;
 import com.agis.model.Aula;
@@ -41,12 +42,14 @@ import com.agis.model.Curso;
 import com.agis.model.Disciplina;
 import com.agis.model.Frequencia;
 import com.agis.model.Matricula;
+import com.agis.model.Nota;
 import com.agis.model.Relatorio;
 import com.agis.model.Vinculo;
 import com.agis.repository.CursoRepository;
 import com.agis.repository.DisciplinaRepository;
 import com.agis.repository.FrequenciaRepository;
 import com.agis.repository.MatriculaRepository;
+import com.agis.repository.NotaRepository;
 import com.agis.repository.RelatorioRepository;
 import com.agis.repository.VinculoRepository;
 
@@ -82,6 +85,9 @@ public class AlunoController {
 
     @Autowired
     FrequenciaRepository frequenciaRepository;
+
+    @Autowired
+    NotaRepository notaRepository;
 
     @GetMapping("/")
     public String getIndex(Model model){
@@ -122,6 +128,14 @@ public class AlunoController {
 
         return "index";
     }
+
+    @GetMapping("/lista-ra")
+    public String listaAlunosVinculo(Model model){
+        List<Aluno> alunos = alunoRepository.findAll();
+        model.addAttribute("alunos", alunos);                
+        return "listaAlunos";        
+    }
+
 
     @GetMapping("/vinculo/{ra}")
     public String getVinculo(@PathVariable(value="ra") String ra, Model model){
@@ -270,7 +284,88 @@ public class AlunoController {
         return new ResponseEntity(resource, header, status);
     }
 
-    
+    @GetMapping("/relatorio-notas-impresso")
+    public ResponseEntity getRelatorioNotas(){
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        byte[] dados = null;
+        String erro = "";
+        InputStreamResource resource = null;
+        HttpStatus status = null;
+        HttpHeaders header = new HttpHeaders();
+        try {
+            Connection connection = Connector.connect();
+            File arquivo = ResourceUtils.getFile("classpath:RelatorioNotas.jasper");
+            JasperReport report = (JasperReport) JRLoader.loadObjectFromFile(arquivo.getAbsolutePath());
+            dados = JasperRunManager.runReportToPdf(report, parameters, connection);                     
+        } 
+        catch (Exception e) {
+            erro = e.getMessage();
+            status = HttpStatus.BAD_REQUEST;
+            System.out.println(e.getMessage());
+        }
+        finally{
+            if(erro.equals("")){
+                InputStream stream = new ByteArrayInputStream(dados);
+                resource = new InputStreamResource(stream);
+                header.setContentLength(dados.length);
+                header.setContentType(MediaType.APPLICATION_PDF);
+                status = HttpStatus.OK;   
+            }                         
+            }
+            return new ResponseEntity(resource, header, status);
+    }
+
+    @GetMapping("/notas")
+    public String getPaginaNotas(Model model){
+        List<Disciplina> disciplinas = disciplinaRepository.findAll();
+        model.addAttribute("disciplinas", disciplinas);        
+        return "notas";
+    }
+
+    @GetMapping("/dados-notas")
+    public String getDadosDisciplina(@RequestParam("codigo") int codigo, Model model){
+        Disciplina disciplina = disciplinaRepository.getReferenceById(codigo);
+        List<Avaliacao> avaliacaos = disciplina.getAvaliacaos();
+        List<Vinculo> vinculos = disciplina.getVinculos();
+        List<Aluno> alunos = new ArrayList<Aluno>();
+        for(Vinculo vinculo : vinculos){
+            Aluno aluno = vinculo.getMatricula().getAluno();
+            alunos.add(aluno);            
+        }        
+        model.addAttribute("avaliacaos", avaliacaos);
+        model.addAttribute("disciplina", disciplina);
+        model.addAttribute("alunos", alunos);
+        return "notas";        
+    }
+
+    @PostMapping("/notas")
+    public String postNotas(@ModelAttribute NotasForm form){
+        Disciplina disciplina = disciplinaRepository.getReferenceById(form.getCodigoDisciplina());
+        List<Vinculo> vinculos = disciplina.getVinculos();
+            for(int i = 0; i < disciplina.getVinculos().size(); i++){
+                Nota nota1 = new Nota();
+                nota1.setVinculo(vinculos.get(i));
+                nota1.setNota(form.getAvaliacao0().get(i));
+                nota1.setAvaliacao(disciplina.getAvaliacaos().get(0));
+                notaRepository.save(nota1);
+
+                Nota nota2 = new Nota();
+                nota2.setVinculo(vinculos.get(i));
+                nota2.setNota(form.getAvaliacao1().get(i));
+                nota2.setAvaliacao(disciplina.getAvaliacaos().get(1));
+                notaRepository.save(nota2);
+
+                if(disciplina.getAvaliacaos().size() >= 3){
+                    Nota nota3 = new Nota();
+                    nota3.setVinculo(vinculos.get(i));
+                    nota3.setNota(form.getAvaliacao2().get(i));
+                    nota3.setAvaliacao(disciplina.getAvaliacaos().get(2));
+                    notaRepository.save(nota3);
+                }
+                
+            }                                                                
+        return "redirect:/";        
+    }
 
     private String geraRa(Aluno aluno){
         StringBuilder stringBuilder = new StringBuilder();

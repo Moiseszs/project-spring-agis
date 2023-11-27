@@ -111,3 +111,12 @@ SELECT COUNT(aula.codigo) * disciplina.horas_aula FROM disciplina, aula
 WHERE disciplina.codigo = aula.disciplina_codigo
 GROUP BY disciplina.horas_aula
 
+SELECT aluno.ra, aluno.nome_completo, disciplina.nome, AVG(nota.nota) AS media FROM nota, vinculo,
+matricula, aluno, avaliacao,disciplina
+WHERE nota.vinculo_id = vinculo.id
+AND nota.avaliacao_codigo = avaliacao.codigo
+AND vinculo.matricula_codigo = matricula.codigo
+AND aluno.ra = matricula.aluno_ra
+AND avaliacao.codigo = nota.avaliacao_codigo
+AND disciplina.codigo = avaliacao.disciplina_codigo
+GROUP BY aluno.nome_completo, disciplina.nome, aluno.ra

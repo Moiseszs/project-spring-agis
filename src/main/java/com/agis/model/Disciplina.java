@@ -124,4 +124,7 @@ public class Disciplina {
         return vinculos;
     }
 
+    public List<Avaliacao> getAvaliacaos() {
+        return avaliacaos;
+    }
 }
